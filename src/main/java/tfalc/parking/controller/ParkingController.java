@@ -3,6 +3,7 @@ package tfalc.parking.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tfalc.parking.dto.ParkingCreateDTO;
 import tfalc.parking.dto.ParkingDTO;
 import tfalc.parking.mapper.ParkingMapper;
 import tfalc.parking.model.Parking;
@@ -35,10 +36,10 @@ public class ParkingController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping()
-    public ResponseEntity<ParkingDTO> createParked(@RequestBody ParkingDTO createParked){
+    @PostMapping("/createParked")
+    public ResponseEntity<ParkingDTO> createParked(@RequestBody ParkingCreateDTO createParked){
 
-        var parkingCreate = ParkingMapper.toParking(createParked);
+        var parkingCreate = ParkingMapper.toParkingCreate(createParked);
 
         Parking parking = parkingService.createParking(parkingCreate);
         ParkingDTO result = parkingMapper.toParkingDTO(parking);
