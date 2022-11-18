@@ -1,5 +1,7 @@
 package tfalc.parking.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +14,8 @@ import tfalc.parking.service.ParkingService;
 import java.util.List;
 
 @RestController
+@RequestMapping("/parking")
+@Api(tags = "Parking Controller")
 public class ParkingController {
 
     private final ParkingService parkingService;
@@ -23,6 +27,7 @@ public class ParkingController {
     }
 
     @GetMapping("/parked")
+    @ApiOperation(value = "Find all Parked")
     public ResponseEntity<List<ParkingDTO>> findAll(){
         List<Parking> parkingList = parkingService.findAll();
         List<ParkingDTO> result = parkingMapper.toParkingDTOList(parkingList);
@@ -30,6 +35,7 @@ public class ParkingController {
     }
 
     @GetMapping("/parked/{id}")
+    @ApiOperation(value = "Find parked by ID")
     public ResponseEntity<ParkingDTO> findById(@PathVariable String id){
         Parking parkingById = parkingService.findById(id);
         ParkingDTO result = parkingMapper.toParkingDTO(parkingById);
@@ -37,6 +43,7 @@ public class ParkingController {
     }
 
     @PostMapping("/createParked")
+    @ApiOperation(value = "Create a new parked car")
     public ResponseEntity<ParkingDTO> createParked(@RequestBody ParkingCreateDTO createParked){
 
         var parkingCreate = ParkingMapper.toParkingCreate(createParked);
@@ -45,6 +52,13 @@ public class ParkingController {
         ParkingDTO result = parkingMapper.toParkingDTO(parking);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(result);
+    }
+
+    @DeleteMapping("/parked/{id}")
+    @ApiOperation(value = "Delete parked by ID")
+    public ResponseEntity deleteById(@PathVariable String id){
+        parkingService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
