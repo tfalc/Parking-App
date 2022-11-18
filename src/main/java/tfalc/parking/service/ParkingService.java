@@ -52,4 +52,17 @@ public class ParkingService {
         findById(id);
         parkingMap.remove(id);
     }
+
+    public Parking update(String id, Parking parkingCreate) {
+        Parking parkedCar = findById(id);
+        parkedCar.setColor(parkingCreate.getColor());
+        parkingMap.replace(id, parkedCar);
+
+        return parkedCar;
+    }
+
+    public Parking exit(String id) {
+        //Atualizar data de saida e valor cobrado
+        return null;
+    }
 }
