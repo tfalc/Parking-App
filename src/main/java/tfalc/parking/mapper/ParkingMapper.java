@@ -2,6 +2,7 @@ package tfalc.parking.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
+import tfalc.parking.dto.ParkingCreateDTO;
 import tfalc.parking.dto.ParkingDTO;
 import tfalc.parking.model.Parking;
 
@@ -14,6 +15,10 @@ public class ParkingMapper {
     private static final ModelMapper MODEL_MAPPER = new ModelMapper();
 
     public static Parking toParking(ParkingDTO createParked) {
+        return MODEL_MAPPER.map(createParked, Parking.class);
+    }
+
+    public static Parking toParkingCreate(ParkingCreateDTO createParked) {
         return MODEL_MAPPER.map(createParked, Parking.class);
     }
 
