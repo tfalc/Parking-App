@@ -1,6 +1,7 @@
 package tfalc.parking.service;
 
 import org.springframework.stereotype.Service;
+import tfalc.parking.exception.ParkingNotFoundException;
 import tfalc.parking.model.Parking;
 
 import java.time.LocalDateTime;
@@ -18,10 +19,10 @@ public class ParkingService {
         Parking parking = new Parking(id, "KOF-9828", "RJ", "VW GOL", "White");
         Parking parkingBus = new Parking(id1, "KMS-1231", "SP", "Bus", "Yellow");
         parkingMap.put(id, parking);
-        parkingMap.put(id1,parkingBus);
+        parkingMap.put(id1, parkingBus);
     }
 
-    public List<Parking> findAll(){
+    public List<Parking> findAll() {
         return parkingMap.values().stream().collect(Collectors.toList());
     }
 
@@ -30,7 +31,13 @@ public class ParkingService {
     }
 
     public Parking findById(String id) {
-        return parkingMap.get(id);
+        Parking parking = parkingMap.get(id);
+
+        if(parking == null){
+            throw new ParkingNotFoundException(id);
+        }
+
+        return parking;
     }
 
     public Parking createParking(Parking parkingCreate) {
@@ -39,5 +46,10 @@ public class ParkingService {
         parkingCreate.setEntryDate(LocalDateTime.now());
         parkingMap.put(uuid, parkingCreate);
         return parkingCreate;
+    }
+
+    public void delete(String id) {
+        findById(id);
+        parkingMap.remove(id);
     }
 }
