@@ -5,6 +5,7 @@ import tfalc.parking.exception.ParkingNotFoundException;
 import tfalc.parking.model.Parking;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -63,6 +64,10 @@ public class ParkingService {
 
     public Parking exit(String id) {
         //Atualizar data de saida e valor cobrado
-        return null;
+        Parking parkedCar = findById(id);
+        parkedCar.setExitDate(LocalDateTime.now());
+        var billedTime = parkedCar.getEntryDate().until(parkedCar.getExitDate(), ChronoUnit.MINUTES);
+        parkedCar.setBill(1 + (0.5 * billedTime));
+        return parkedCar;
     }
 }
